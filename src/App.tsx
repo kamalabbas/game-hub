@@ -19,7 +19,7 @@ function App() {
         </GridItem>
       </Show>
       <GridItem area={"main"}>
-        {/* <GameGrid /> */}
+        <GameGrid />
       </GridItem>
     </Grid>
   );
