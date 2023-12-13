@@ -16,10 +16,14 @@ export default function PlatformSelector({ onSelectPlatform, selectedPlatform }:
   return (
     <Menu>
       <MenuButton as={Button} rightIcon={<BsChevronDown />}>
-         {selectedPlatform?.name || 'Platforms'} 
+        {selectedPlatform?.name || 'Platforms'}
       </MenuButton>
       <MenuList>
-        {data.map((platform) => <MenuItem onClick={() => onSelectPlatform(platform)} key={platform.id}>{platform.name}</MenuItem>)}
+        {data.map((platform) =>
+          <MenuItem key={platform.id} onClick={() => onSelectPlatform(platform)}>
+            {platform.name}
+          </MenuItem>
+        )}
       </MenuList>
     </Menu>
   )
