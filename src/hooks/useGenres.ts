@@ -5,7 +5,8 @@ import useData from "./useData";
 // import { CanceledError } from "axios";
 export interface Genre {
     id: number;
-    name: string
+    name: string;
+    image_background: string;
 }
 
 // this code is no longer need because it is replaced with w generic hook called useData
