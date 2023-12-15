@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import apiClient from "../services/api-client";
-import { CanceledError } from "axios";
+// import { useEffect, useState } from "react";
+// import apiClient from "../services/api-client";
+// import { CanceledError } from "axios";
+// import { Genre } from "./useGenres";
 import useData from "./useData";
-import { Genre } from "./useGenres";
 import { GameQuery } from "../App";
 
 export interface Platform {
@@ -17,6 +17,8 @@ export interface Game {
   background_image: string;
   parent_platforms: { platform: Platform }[];
   metacritic: number;
+  rating_top: number;
+  rating: number;
 }
 
 // interface FetchGamesResponse {
