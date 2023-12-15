@@ -1,6 +1,8 @@
 // import { useEffect, useState } from "react";
 // import apiClient from "../services/api-client";
-import useData from "./useData";
+// import useData from "./useData";
+
+import genres from '../data/genres';
 
 // import { CanceledError } from "axios";
 export interface Genre {
@@ -40,6 +42,9 @@ export interface Genre {
 //     return {genres, error, isLoading}
 // }
 
-const useGenres = () => useData<Genre>('/genres');
+// const useGenres = () => useData<Genre>('/genres');
+
+// since the genres is static  data we created a copy of the data and rendered the list staticly that case we reduced the amount of server calls 
+const useGenres = () => ({ data: genres, isLoading: false, error: null });
 
 export default useGenres;

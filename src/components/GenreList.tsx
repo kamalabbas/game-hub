@@ -12,7 +12,7 @@ export default function GenreList({ onSelectGenre, selectedGenre }: Props) {
   const { data, error, isLoading } = useGenres();
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
-  if (error) return null;
+  // if (error) return null;
   // if(isLoading) return <Spinner />
 
   return (
