@@ -1,5 +1,7 @@
+import defaultImage from '../assets/default.png';
+
 const getCroppedImageUrl = (url: string) => {
-    if (!url) return '';
+    if (!url) return defaultImage;
     
     const target = 'media/';
     const index = url.indexOf(target) + target.length;
