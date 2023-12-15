@@ -22,7 +22,7 @@ export default function GameGrid( {gameQuery}: Props ) {
     return (
         <>
             {error && <Text>{error}</Text>}
-            <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 5 }} padding='16px' spacing={4}>
+            <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} padding='16px' spacing={4}>
                 {isLoading && skeletons.map(skeleton => <GameCardContainer key={skeleton}><GameCardSkeleton /></GameCardContainer>)}
 
                 {data.map(game => (
