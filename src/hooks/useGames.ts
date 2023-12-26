@@ -4,7 +4,8 @@
 // import { Genre } from "./useGenres";
 import { GameQuery } from "../App";
 import { useQuery } from "@tanstack/react-query";
-import apiClient, { FetchResponse } from "../services/api-client";
+// import apiClient, { FetchResponse } from "../services/api-client";
+import APIClient, { FetchResponse } from "../services/api-client";
 import { Platform } from "./usePlatforms";
 
 // export interface Platform {
@@ -12,6 +13,8 @@ import { Platform } from "./usePlatforms";
 //   name: string;
 //   slug: string;
 // }
+
+const apiClient = new APIClient<Game>("/games");
 
 export interface Game {
   id: number;
@@ -74,15 +77,23 @@ const useGames = (
   // );
   useQuery<FetchResponse<Game>, Error>({
     queryKey: ["games", gameQuery],
-    queryFn: () =>
-      apiClient.get<FetchResponse<Game>>("/games", {
+    // queryFn: () =>
+    //   apiClient.get<FetchResponse<Game>>("/games", {
+    //     params: {
+    //       genres: gameQuery.genre?.id,
+    //       parent_platforms: gameQuery.platform?.id,
+    //       ordering: gameQuery.sortOrder,
+    //       search: gameQuery.searchText,
+    //     },
+    //   }).then(res => res.data),
+    queryFn: () => apiClient.getAll({
         params: {
           genres: gameQuery.genre?.id,
           parent_platforms: gameQuery.platform?.id,
           ordering: gameQuery.sortOrder,
           search: gameQuery.searchText,
         },
-      }).then(res => res.data),
+      }),
   });
 
 export default useGames;

@@ -3,12 +3,15 @@
 // import useData from "./useData";
 
 import { useQuery } from "@tanstack/react-query";
-import apiClient, { FetchResponse } from "../services/api-client";
+// import apiClient, { FetchResponse } from "../services/api-client";
+import APIClient, { FetchResponse } from "../services/api-client";
 // import { FetchResponse } from "./useData";
 import genres from "../data/genres";
 // import genres from "../data/genres";
-
 // import { CanceledError } from "axios";
+
+
+const apiClient = new APIClient<Genre>('/genres');
 export interface Genre {
   id: number;
   name: string;
@@ -55,7 +58,11 @@ export interface Genre {
 const useGenres = () =>
   useQuery<FetchResponse<Genre>,Error>({
     queryKey: ["genres"],
-    queryFn: () => apiClient.get<FetchResponse<Genre>>("/genres").then((res) => res.data),
+
+    // this was the first method 
+    // queryFn: () => apiClient.get<FetchResponse<Genre>>("/genres").then((res) => res.data),
+    queryFn: apiClient.getAll,
+
     // staletime is used to cachin data so how offten this object has to change.
     staleTime: 24 * 60 *60 * 1000, // this is 24h,
     initialData: {count: genres.length, results: genres}
