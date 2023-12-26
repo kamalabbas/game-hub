@@ -3,7 +3,8 @@
 // import { CanceledError } from "axios";
 // import { Genre } from "./useGenres";
 import { GameQuery } from "../App";
-import { useQuery } from "@tanstack/react-query";
+// import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 // import apiClient, { FetchResponse } from "../services/api-client";
 import APIClient, { FetchResponse } from "../services/api-client";
 import { Platform } from "./usePlatforms";
@@ -75,7 +76,9 @@ const useGames = (
   //   // [selectedGenre?.id, selectedPlatform?.id]
   //   [gameQuery]
   // );
-  useQuery<FetchResponse<Game>, Error>({
+
+  // we replaced useQuery with useInfiniteQuery to implmenet the infinite scroll data
+  useInfiniteQuery<FetchResponse<Game>, Error>({
     queryKey: ["games", gameQuery],
     // queryFn: () =>
     //   apiClient.get<FetchResponse<Game>>("/games", {
@@ -86,14 +89,19 @@ const useGames = (
     //       search: gameQuery.searchText,
     //     },
     //   }).then(res => res.data),
-    queryFn: () => apiClient.getAll({
+    queryFn: ({pageParam = 1}) => apiClient.getAll({
         params: {
           genres: gameQuery.genre?.id,
           parent_platforms: gameQuery.platform?.id,
           ordering: gameQuery.sortOrder,
           search: gameQuery.searchText,
+          page: pageParam
         },
       }),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.next ? allPages.length + 1 : undefined;
+    },
+    initialPageParam: 1
   });
 
 export default useGames;
