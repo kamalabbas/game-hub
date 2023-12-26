@@ -65,7 +65,7 @@ const useGenres = () =>
 
     // staletime is used to cachin data so how offten this object has to change.
     staleTime: 24 * 60 *60 * 1000, // this is 24h,
-    initialData: {count: genres.length, results: genres}
+    initialData: {count: genres.length, results: genres, next: ''}
   });
 
 export default useGenres;
