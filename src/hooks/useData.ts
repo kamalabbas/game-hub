@@ -1,35 +1,42 @@
-import { useEffect, useState } from "react";
-import apiClient from "../services/api-client";
-import { AxiosRequestConfig, CanceledError } from "axios";
+//********************************* */
+// IMPORTANT
+// we are no longer using useData instead we're using react Query aproach 
 
-interface FetchResponse<T> {
-    count: number;
-    results: T[];
-}
+//********************************* */
 
-const useData = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, deps?: any[]) => {    
-    const [data, setData] = useState<T[]>([]);
-    const [error, setError] = useState('');
-    const [isLoading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const controller = new AbortController();
-        setLoading(true);
-        apiClient.get<FetchResponse<T>>(endpoint, {signal: controller.signal, ...requestConfig})
-            .then(res => {
-                setData(res.data.results);
-                setLoading(false);
-            })
-            .catch(err =>{ 
-                if(err instanceof CanceledError) return;
-                setError(err.message)
-                setLoading(false);
-            });
+// import { useEffect, useState } from "react";
+// import apiClient from "../services/api-client";
+// import { AxiosRequestConfig, CanceledError } from "axios";
 
-        return () => controller.abort();
-    },deps? [...deps]: []);
+// export interface FetchResponse<T> {
+//     count: number;
+//     results: T[];
+// }
 
-    return {data, error, isLoading}
-}
+// const useData = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, deps?: any[]) => {    
+//     const [data, setData] = useState<T[]>([]);
+//     const [error, setError] = useState('');
+//     const [isLoading, setLoading] = useState(false);
 
-export default useData;
+//     useEffect(() => {
+//         const controller = new AbortController();
+//         setLoading(true);
+//         apiClient.get<FetchResponse<T>>(endpoint, {signal: controller.signal, ...requestConfig})
+//             .then(res => {
+//                 setData(res.data.results);
+//                 setLoading(false);
+//             })
+//             .catch(err =>{ 
+//                 if(err instanceof CanceledError) return;
+//                 setError(err.message)
+//                 setLoading(false);
+//             });
+
+//         return () => controller.abort();
+//     },deps? [...deps]: []);
+
+//     return {data, error, isLoading}
+// }
+
+// export default useData;

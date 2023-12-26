@@ -2,13 +2,17 @@
 // import apiClient from "../services/api-client";
 // import useData from "./useData";
 
-import genres from '../data/genres';
+import { useQuery } from "@tanstack/react-query";
+import apiClient, { FetchResponse } from "../services/api-client";
+// import { FetchResponse } from "./useData";
+import genres from "../data/genres";
+// import genres from "../data/genres";
 
 // import { CanceledError } from "axios";
 export interface Genre {
-    id: number;
-    name: string;
-    image_background: string;
+  id: number;
+  name: string;
+  image_background: string;
 }
 
 // this code is no longer need because it is replaced with w generic hook called useData
@@ -17,7 +21,7 @@ export interface Genre {
 //     results: Genre[];
 // }
 
-// const useGenres = () => {    
+// const useGenres = () => {
 //     const [genres, setGenres] = useState<Genre[]>([]);
 //     const [error, setError] = useState('');
 //     const [isLoading, setLoading] = useState(false);
@@ -30,7 +34,7 @@ export interface Genre {
 //                 setGenres(res.data.results);
 //                 setLoading(false);
 //             })
-//             .catch(err =>{ 
+//             .catch(err =>{
 //                 if(err instanceof CanceledError) return;
 //                 setError(err.message)
 //                 setLoading(false);
@@ -44,7 +48,17 @@ export interface Genre {
 
 // const useGenres = () => useData<Genre>('/genres');
 
-// since the genres is static  data we created a copy of the data and rendered the list staticly that case we reduced the amount of server calls 
-const useGenres = () => ({ data: genres, isLoading: false, error: null });
+// since the genres is static  data we created a copy of the data and rendered the list staticly that case we reduced the amount of server calls
+// const useGenres = () => ({ data: genres, isLoading: false, error: null });
+
+// we will replace this with reactquery
+const useGenres = () =>
+  useQuery<FetchResponse<Genre>,Error>({
+    queryKey: ["genres"],
+    queryFn: () => apiClient.get<FetchResponse<Genre>>("/genres").then((res) => res.data),
+    // staletime is used to cachin data so how offten this object has to change.
+    staleTime: 24 * 60 *60 * 1000, // this is 24h,
+    initialData: {count: genres.length, results: genres}
+  });
 
 export default useGenres;

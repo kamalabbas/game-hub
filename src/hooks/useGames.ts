@@ -2,8 +2,9 @@
 // import apiClient from "../services/api-client";
 // import { CanceledError } from "axios";
 // import { Genre } from "./useGenres";
-import useData from "./useData";
 import { GameQuery } from "../App";
+import { useQuery } from "@tanstack/react-query";
+import apiClient, { FetchResponse } from "../services/api-client";
 
 export interface Platform {
   id: number;
@@ -52,24 +53,35 @@ export interface Game {
 // }
 
 const useGames = (
-//   selectedGenre: Genre | null,
-//   selectedPlatform: Platform | null
-    gameQuery: GameQuery
+  //   selectedGenre: Genre | null, //   selectedPlatform: Platform | null,
+  gameQuery: GameQuery
 ) =>
-  useData<Game>(
-    "/games",
-    {
-      params: {
-        // genres: selectedGenre?.id,
-        // platforms: selectedPlatform?.id,
-        genres: gameQuery.genre?.id,
-        platforms: gameQuery.platform?.id,
-        ordering: gameQuery.sortOrder,
-        search: gameQuery.searchText
-      },
-    },
-    // [selectedGenre?.id, selectedPlatform?.id]
-    [gameQuery]
-  );
+  // useData<Game>(
+  //   "/games",
+  //   {
+  //     params: {
+  //       // genres: selectedGenre?.id,
+  //       // platforms: selectedPlatform?.id,
+  //       genres: gameQuery.genre?.id,
+  //       platforms: gameQuery.platform?.id,
+  //       ordering: gameQuery.sortOrder,
+  //       search: gameQuery.searchText,
+  //     },
+  //   },
+  //   // [selectedGenre?.id, selectedPlatform?.id]
+  //   [gameQuery]
+  // );
+  useQuery<FetchResponse<Game>, Error>({
+    queryKey: ["games", gameQuery],
+    queryFn: () =>
+      apiClient.get<FetchResponse<Game>>("/games", {
+        params: {
+          genres: gameQuery.genre?.id,
+          parent_platforms: gameQuery.platform?.id,
+          ordering: gameQuery.sortOrder,
+          search: gameQuery.searchText,
+        },
+      }).then(res => res.data),
+  });
 
 export default useGames;
